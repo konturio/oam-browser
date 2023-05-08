@@ -70,8 +70,7 @@ function uploadFile({
   file,
   progressTracker,
   onUploadComplete = () => {},
-  setCancelCallback = () => {},
-  onCancel = () => {}
+  setCancelCallback = () => {}
 }) {
   const signerUrl = `${config.catalog.url}/signupload`;
   const bucket = config.uploadBucket;
@@ -120,9 +119,11 @@ function uploadFile({
           console.log("evaporateJS pausing", args);
         },
         cancelled: function(...args) {
-          onCancel();
           console.log("evaporateJS cancelled", args);
         },
+        // complete: function(...args) {
+        //   console.log("evaporateJS complete", args);
+        // },
         info: function(...args) {
           console.log("evaporateJS info", args);
         },
@@ -398,7 +399,8 @@ export default createReactClass({
                 progressStats,
                 fileName: file.newName,
                 onProgress: uploadProgress => {
-                  this.setState({ uploadProgress });
+                  if (!this.state.uploadCancelled)
+                    this.setState({ uploadProgress });
                 }
               });
 
@@ -409,18 +411,7 @@ export default createReactClass({
                   this.setState({
                     uploadedCount: this.state.uploadedCount + 1
                   }),
-                setCancelCallback: cancel => this.cancelPromises.push(cancel),
-                onCancel: () => {
-                  this.setState({
-                    uploadActive: false,
-                    uploadProgress: 0,
-                    uploadError: false,
-                    uploadStatus: "",
-                    uploadedCount: 0,
-                    uploadCancelled: false,
-                    submitting: false
-                  });
-                }
+                setCancelCallback: cancel => this.cancelPromises.push(cancel)
               });
 
               uploadPromises.push(promise);
@@ -448,15 +439,15 @@ export default createReactClass({
               .catch(error => {
                 console.error(error);
                 if (this.state.uploadCancelled) {
-                  // this.setState({
-                  //   uploadActive: false,
-                  //   uploadProgress: 0,
-                  //   uploadError: false,
-                  //   uploadStatus: "",
-                  //   uploadedCount: 0,
-                  //   uploadCancelled: false,
-                  //   submitting: false
-                  // });
+                  this.setState({
+                    uploadActive: false,
+                    uploadProgress: 0,
+                    uploadError: false,
+                    uploadStatus: "",
+                    uploadedCount: 0,
+                    uploadCancelled: false,
+                    submitting: false
+                  });
                   return;
                 }
 
