@@ -77,7 +77,6 @@ function uploadFile({
   const Buffer = buffer.Buffer;
 
   return Evaporate.create({
-    // aws_url: "http://s3.amazonaws.com",
     awsRegion: config.awsRegion,
     aws_key,
     signerUrl,
@@ -108,7 +107,10 @@ function uploadFile({
       .add({
         name: file.newName,
         file: file.data,
-        progress: progressTracker
+        progress: progressTracker,
+        error: function(error, stats) {
+          console.log("error", error, stats);
+        }
       })
       .then(onUploadComplete);
   });
