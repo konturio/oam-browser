@@ -43,7 +43,8 @@ function getSceneDefaultState() {
 }
 
 function createProgressTracker({ progressStats, fileName, onProgress }) {
-  return function(p, stats) {
+  return function(_percentComplete, stats) {
+    console.log("progress", stats);
     progressStats[fileName] = stats;
     const progressStatsValues = Object.values(progressStats);
     const progress = progressStatsValues.reduce(
@@ -107,7 +108,28 @@ function uploadFile({
       .add({
         name: file.newName,
         file: file.data,
-        progress: progressTracker
+        progress: progressTracker,
+        paused: function(...args) {
+          console.log("evaporateJS paused", args);
+        },
+        resumed: function(...args) {
+          console.log("evaporateJS resumed", args);
+        },
+        pausing: function(...args) {
+          console.log("evaporateJS pausing", args);
+        },
+        cancelled: function(...args) {
+          console.log("evaporateJS cancelled", args);
+        },
+        // complete: function(...args) {
+        //   console.log("evaporateJS complete", args);
+        // },
+        info: function(...args) {
+          console.log("evaporateJS info", args);
+        },
+        warn: function(...args) {
+          console.log("evaporateJS warn", args);
+        }
       })
       .then(onUploadComplete);
   });
