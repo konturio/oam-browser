@@ -407,6 +407,7 @@ export default createReactClass({
                   this.setState(prevState => {
                     if (
                       !this.state.uploadCancelled &&
+                      this.state.online &&
                       prevState.uploadProgress <= uploadProgress
                     )
                       return { ...prevState, uploadProgress };
