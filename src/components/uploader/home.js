@@ -185,7 +185,6 @@ export default createReactClass({
       uploadActive: false,
       uploadProgress: 0,
       uploadError: false,
-      uploadStatus: "",
       uploadedCount: 0,
       uploadCancelled: false,
       submitting: false,
@@ -435,7 +434,6 @@ export default createReactClass({
                 this.setState({
                   uploadError: false,
                   uploadActive: false,
-                  uploadStatus: "Upload complete!",
                   uploadedCount: 0,
                   submitting: false
                 });
@@ -449,7 +447,6 @@ export default createReactClass({
                     uploadActive: false,
                     uploadProgress: 0,
                     uploadError: false,
-                    uploadStatus: "",
                     uploadedCount: 0,
                     uploadCancelled: false,
                     submitting: false
