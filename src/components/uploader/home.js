@@ -484,6 +484,8 @@ export default createReactClass({
                     submitting: false
                   });
 
+                  AppActions.clearNotification();
+
                   return;
                 }
 
