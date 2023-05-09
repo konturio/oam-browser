@@ -47,9 +47,9 @@ function createProgressTracker({ progressStats, fileName, onProgress }) {
     console.log("progress", stats);
     progressStats[fileName] = stats;
     const progressStatsValues = Object.values(progressStats);
-    const progress = progressStatsValues.reduce(
+    const { sumTotalUploaded, sumFilesize } = progressStatsValues.reduce(
       (accumulator, current) => {
-        if (current.loaded > 0)
+        if (current.loaded >= 0)
           return {
             sumTotalUploaded:
               accumulator.sumTotalUploaded + current.totalUploaded,
@@ -61,9 +61,8 @@ function createProgressTracker({ progressStats, fileName, onProgress }) {
       { sumTotalUploaded: 0, sumFilesize: 0 }
     );
 
-    const percentComplete = Math.round(
-      progress.sumTotalUploaded / progress.sumFilesize * 100
-    );
+    const percentComplete =
+      sumFilesize === 0 ? 0 : Math.round(sumTotalUploaded / sumFilesize * 100);
 
     onProgress(percentComplete);
   };
