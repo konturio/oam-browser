@@ -102,7 +102,6 @@ function uploadFile({
     logging: false
   }).then(evaporate => {
     setCancelCallback(() => {
-      console.log("cancel file", file.newName);
       evaporate.cancel(`${bucket}/${file.newName}`);
     });
 
@@ -110,28 +109,7 @@ function uploadFile({
       .add({
         name: file.newName,
         file: file.data,
-        progress: progressTracker,
-        paused: function(...args) {
-          console.log("evaporateJS paused", args);
-        },
-        resumed: function(...args) {
-          console.log("evaporateJS resumed", args);
-        },
-        pausing: function(...args) {
-          console.log("evaporateJS pausing", args);
-        },
-        cancelled: function(...args) {
-          console.log("evaporateJS cancelled", args);
-        },
-        // complete: function(...args) {
-        //   console.log("evaporateJS complete", args);
-        // },
-        info: function(...args) {
-          console.log("evaporateJS info", args);
-        },
-        warn: function(...args) {
-          console.log("evaporateJS warn", args);
-        }
+        progress: progressTracker
       })
       .then(onUploadComplete);
   });
