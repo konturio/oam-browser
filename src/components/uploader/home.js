@@ -418,8 +418,15 @@ export default createReactClass({
                 progressStats,
                 fileName: file.newName,
                 onProgress: uploadProgress => {
-                  if (!this.state.uploadCancelled)
-                    this.setState({ uploadProgress });
+                  this.setState(prevState => {
+                    if (
+                      !this.state.uploadCancelled &&
+                      prevState.uploadProgress <= uploadProgress
+                    )
+                      return { ...prevState, uploadProgress };
+
+                    return prevState;
+                  });
                 }
               });
 
@@ -467,6 +474,10 @@ export default createReactClass({
                     uploadCancelled: false,
                     submitting: false
                   });
+
+                  AppActions.clearNotification();
+                  AppActions.showNotification("alert", "Upload cancelled");
+
                   return;
                 }
 
@@ -481,9 +492,11 @@ export default createReactClass({
   cancelPromises: [],
 
   onCancel: function() {
-    this.setState({
-      uploadCancelled: true
-    });
+    if (this.state.uploadCancelled) return;
+
+    AppActions.showNotification("alert", "Cancelling the current upload");
+
+    this.setState({ uploadCancelled: true });
 
     this.cancelPromises.forEach(cancel => cancel());
   },
