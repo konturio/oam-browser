@@ -549,15 +549,12 @@ export default createReactClass({
       0
     );
 
-    const currentImageNum = 1 + this.state.uploadedCount;
-
     return (
       <div className="form-wrapper">
         <UploadModal
           revealed={this.state.uploadActive}
           progress={this.state.uploadProgress}
           imageCount={uploadingFilesCount}
-          currentImageNum={currentImageNum}
           onCancel={this.onCancel}
           stopped={!this.state.online}
         />

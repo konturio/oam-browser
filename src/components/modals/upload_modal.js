@@ -34,15 +34,14 @@ class UploadModal extends React.Component {
       stopped,
       revealed,
       imageCount,
-      currentImageNum,
       progress,
       onCancel: onConfirmCancel
     } = this.props;
 
     const text =
       imageCount > 1
-        ? `Uploading ${currentImageNum} of ${imageCount} images...`
-        : `Uploading ${currentImageNum} image...`;
+        ? `Uploading ${imageCount} images...`
+        : `Uploading 1 image...`;
 
     return (
       <ModalParent id="upload-modal" revealed={revealed}>
