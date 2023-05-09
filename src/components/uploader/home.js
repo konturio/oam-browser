@@ -430,13 +430,6 @@ export default createReactClass({
               uploadPromises.push(promise);
             });
 
-            // async function doPromises() {
-            //   for (const promise of uploadPromises) {
-            //     await promise;
-            //   }
-            // }
-
-            // doPromises()
             Promise.all(uploadPromises)
               .then(async () => {
                 this.setState({
