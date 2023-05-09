@@ -49,11 +49,14 @@ function createProgressTracker({ progressStats, fileName, onProgress }) {
     const progressStatsValues = Object.values(progressStats);
     const progress = progressStatsValues.reduce(
       (accumulator, current) => {
-        return {
-          sumTotalUploaded:
-            accumulator.sumTotalUploaded + current.totalUploaded,
-          sumFilesize: accumulator.sumFilesize + current.fileSize
-        };
+        if (current.loaded > 0)
+          return {
+            sumTotalUploaded:
+              accumulator.sumTotalUploaded + current.totalUploaded,
+            sumFilesize: accumulator.sumFilesize + current.fileSize
+          };
+
+        return accumulator;
       },
       { sumTotalUploaded: 0, sumFilesize: 0 }
     );
@@ -208,7 +211,8 @@ export default createReactClass({
       uploadStatus: "",
       uploadedCount: 0,
       uploadCancelled: false,
-      submitting: false
+      submitting: false,
+      online: navigator.onLine
     };
   },
 
@@ -265,6 +269,22 @@ export default createReactClass({
     this.setState({
       scenes: [getSceneDefaultState()]
     });
+  },
+
+  onOnlineStatusChange: function() {
+    console.log("online status changed", navigator.onLine);
+    this.setState({ online: navigator.onLine });
+  },
+
+  componentDidMount: function() {
+    window.addEventListener("online", this.onOnlineStatusChange);
+    window.addEventListener("offline", this.onOnlineStatusChange);
+    this.onOnlineStatusChange();
+  },
+
+  componentWillUnmount: function() {
+    window.removeEventListener("online", this.onOnlineStatusChange);
+    window.removeEventListener("offline", this.onOnlineStatusChange);
   },
 
   componentDidUpdate: function() {
