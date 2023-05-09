@@ -31,6 +31,7 @@ class UploadModal extends React.Component {
 
   render() {
     const {
+      stopped,
       revealed,
       imageCount,
       currentImageNum,
@@ -48,7 +49,10 @@ class UploadModal extends React.Component {
         <ModalBody>
           <div className="content">
             <p className="current-image-num">{text}</p>
-            <ProgressBar progress={progress} />
+            <ProgressBar
+              progress={progress}
+              className={stopped ? "muted" : ""}
+            />
             <span className="actions">
               {this.state.confirmingCancel ? (
                 <span>

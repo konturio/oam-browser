@@ -573,6 +573,7 @@ export default createReactClass({
           imageCount={uploadingFilesCount}
           currentImageNum={currentImageNum}
           onCancel={this.onCancel}
+          stopped={!this.state.online}
         />
         <section className="panel upload-panel">
           <header className="panel-header">
