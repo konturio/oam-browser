@@ -271,8 +271,17 @@ export default createReactClass({
   },
 
   onOnlineStatusChange: function() {
-    console.log("online status changed", navigator.onLine);
-    this.setState({ online: navigator.onLine });
+    if (this.state.online === navigator.onLine) return;
+
+    this.setState(prevState => {
+      if (prevState.online && !navigator.onLine) {
+        AppActions.showNotification(
+          "alert",
+          "Uploading was stopped. Check your internet connection."
+        );
+      }
+      return { ...prevState, online: navigator.onLine };
+    });
   },
 
   componentDidMount: function() {
@@ -474,9 +483,6 @@ export default createReactClass({
                     uploadCancelled: false,
                     submitting: false
                   });
-
-                  AppActions.clearNotification();
-                  AppActions.showNotification("alert", "Upload cancelled");
 
                   return;
                 }
