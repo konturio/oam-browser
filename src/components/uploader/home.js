@@ -497,7 +497,7 @@ export default createReactClass({
       method: "POST",
       body: data
     }).then(data => {
-      this.setState({ submitting: false });
+      this.setState(this.getInitialState());
 
       var id = data.results.upload;
 
