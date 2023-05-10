@@ -501,8 +501,8 @@ export default createReactClass({
       var id = data.results.upload;
 
       // Clear form data from localStorage after successful upload
-      this.setState(this.getInitialState());
       localStorage.removeItem(LS_SCENES_KEY);
+      this.setState(this.getInitialState());
 
       AppActions.showNotification(
         "success",
