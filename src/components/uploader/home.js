@@ -326,7 +326,7 @@ const UploadHome = createReactClass({
         } else {
           this.setState({ submitting: true, uploadCancelled: false });
 
-          AppActions.clearNotification();
+          // AppActions.clearNotification();
 
           // All is well.
           // SUBMIT DATA.
