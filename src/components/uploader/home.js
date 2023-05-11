@@ -252,7 +252,11 @@ const UploadHome = createReactClass({
     if (this.state.online === navigator.onLine) return;
 
     this.setState(prevState => {
-      if (prevState.online && !navigator.onLine) {
+      if (
+        prevState.online &&
+        !navigator.onLine &&
+        (this.state.uploadActive || this.state.submitting)
+      ) {
         AppActions.showNotification(
           "alert",
           "Uploading was stopped. Check your internet connection."
