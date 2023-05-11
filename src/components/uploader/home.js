@@ -514,8 +514,10 @@ const UploadHome = createReactClass({
   onCancel: function({ showNotification = true } = {}) {
     if (this.state.uploadCancelled) return;
 
-    if (showNotification)
+    if (showNotification) {
       AppActions.showNotification("alert", "Cancelling the current upload");
+      AppActions.clearNotificationAfter(3000);
+    }
 
     this.setState({ uploadCancelled: true });
 
