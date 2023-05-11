@@ -315,11 +315,11 @@
 
     a {
       user-select: none;
-
-      & .disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
     }
+  }
+
+  &.disabled .actions a {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }
