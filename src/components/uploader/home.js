@@ -496,7 +496,7 @@ const UploadHome = createReactClass({
                     submitting: false
                   });
 
-                  AppActions.clearNotification();
+                  AppActions.clearNotificationAfter(3000);
 
                   return;
                 }
