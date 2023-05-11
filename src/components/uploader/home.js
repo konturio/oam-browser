@@ -326,7 +326,7 @@ const UploadHome = createReactClass({
         } else {
           this.setState({ submitting: true, uploadCancelled: false });
 
-          // AppActions.clearNotification();
+          AppActions.clearNotification();
 
           // All is well.
           // SUBMIT DATA.
@@ -432,7 +432,7 @@ const UploadHome = createReactClass({
               );
             }
 
-            AppActions.clearNotificationAfter(3000);
+            AppActions.clearNotificationAfter(5000);
 
             // Upload list of files before submitting the form
             let progressStats = {};
