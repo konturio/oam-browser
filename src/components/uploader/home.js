@@ -268,7 +268,8 @@ export default createReactClass({
 
   componentDidMount: function() {
     window.onbeforeunload = () => {
-      return "Are you sure you want to leave this page?";
+      if (this.state.uploadActive || this.state.submitting)
+        return "Are you sure you want to leave this page?";
     };
 
     window.addEventListener("online", this.onOnlineStatusChange);
