@@ -64,6 +64,10 @@ export default createReactClass({
   },
 
   onNotificationShow: function(type, message) {
+    if (typeof this.timer !== "undefined") {
+      clearTimeout(this.timer);
+    }
+
     this.setState({
       notification: { type: type, message: message }
     });
