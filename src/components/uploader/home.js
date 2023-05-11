@@ -14,6 +14,7 @@ import config from "config";
 import api from "utils/api";
 import { sanitizeFilenameForURL } from "utils/sanitize-filename";
 import UploadModal from "components/modals/upload_modal";
+import { withRouter } from "react-router";
 
 const LS_SCENES_KEY = "scenes-form-fields";
 
@@ -126,7 +127,7 @@ function uploadFile({
 // The solution would be to clone the state every time, but since we're
 // ALWAYS calling setState after one of these changes, it's not a problem.
 
-export default createReactClass({
+const UploadHome = createReactClass({
   displayName: "Home",
 
   mixins: [ValidationMixin],
@@ -266,7 +267,13 @@ export default createReactClass({
     });
   },
 
+  routerWillLeave(nextLocation) {
+    return "Are you sure you want to leave this page?";
+  },
+
   componentDidMount: function() {
+    this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave);
+
     window.onbeforeunload = () => {
       if (this.state.uploadActive || this.state.submitting)
         return "Are you sure you want to leave this page?";
@@ -682,3 +689,5 @@ export default createReactClass({
     );
   }
 });
+
+export default withRouter(UploadHome);
