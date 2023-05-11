@@ -505,7 +505,6 @@ export default createReactClass({
   onCancel: function({ showNotification = true } = {}) {
     if (this.state.uploadCancelled) return;
 
-
     if (showNotification)
       AppActions.showNotification("alert", "Cancelling the current upload");
 
@@ -593,6 +592,7 @@ export default createReactClass({
     return (
       <div className="form-wrapper">
         <UploadModal
+          disabled={this.state.uploadCancelled}
           revealed={this.state.uploadActive}
           progress={this.state.uploadProgress}
           imageCount={uploadingFilesCount}

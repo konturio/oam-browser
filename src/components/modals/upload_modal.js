@@ -31,6 +31,7 @@ class UploadModal extends React.Component {
 
   render() {
     const {
+      disabled,
       stopped,
       revealed,
       imageCount,
@@ -44,7 +45,11 @@ class UploadModal extends React.Component {
         : `Uploading 1 image...`;
 
     return (
-      <ModalParent id="upload-modal" revealed={revealed}>
+      <ModalParent
+        id="upload-modal"
+        revealed={revealed}
+        className={disabled ? "disabled" : ""}
+      >
         <ModalBody>
           <div className="content">
             <p className="current-image-num">{text}</p>
