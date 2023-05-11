@@ -422,15 +422,17 @@ const UploadHome = createReactClass({
           } else {
             if (urls.length !== uploads.length) {
               AppActions.showNotification(
-                "success",
+                "alert",
                 "Processing has already started. Please, wait for downloading of file(s) to processing server to be finished."
               );
             } else {
               AppActions.showNotification(
-                "success",
+                "alert",
                 "Please, do not close the browser page before uploading is finished."
               );
             }
+
+            AppActions.clearNotificationAfter(3000);
 
             // Upload list of files before submitting the form
             let progressStats = {};
