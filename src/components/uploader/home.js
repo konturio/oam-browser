@@ -315,7 +315,7 @@ export default createReactClass({
           console.log(validationErrors);
           AppActions.showNotification("alert", "Form contains errors!");
         } else {
-          this.setState({ submitting: true });
+          this.setState({ submitting: true, uploadCancelled: false });
 
           AppActions.clearNotification();
 
@@ -505,7 +505,6 @@ export default createReactClass({
   onCancel: function({ showNotification = true } = {}) {
     if (this.state.uploadCancelled) return;
 
-    console.log("Call cancel", this.props);
 
     if (showNotification)
       AppActions.showNotification("alert", "Cancelling the current upload");
