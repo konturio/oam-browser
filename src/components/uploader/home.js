@@ -505,7 +505,7 @@ export default createReactClass({
   onCancel: function({ showNotification = true } = {}) {
     if (this.state.uploadCancelled) return;
 
-    console.log("Call cancel");
+    console.log("Call cancel", this.props);
 
     if (showNotification)
       AppActions.showNotification("alert", "Cancelling the current upload");
