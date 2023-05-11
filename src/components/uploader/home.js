@@ -260,7 +260,7 @@ const UploadHome = createReactClass({
       }
 
       if (!prevState.online && navigator.onLine) {
-        AppActions.closeNotification();
+        AppActions.clearNotificationAfter(3000);
       }
 
       return { ...prevState, online: navigator.onLine };
