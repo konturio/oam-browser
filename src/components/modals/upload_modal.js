@@ -60,9 +60,19 @@ class UploadModal extends React.Component {
             <span className="actions">
               {this.state.confirmingCancel ? (
                 <span>
-                  <a onClick={onConfirmCancel}>Confirm cancellation</a>
+                  <a
+                    className={disabled ? "disabled" : ""}
+                    onClick={onConfirmCancel}
+                  >
+                    Confirm cancellation
+                  </a>
                   &nbsp;|&nbsp;
-                  <a onClick={this.onDismiss}>Continue uploading</a>
+                  <a
+                    className={disabled ? "disabled" : ""}
+                    onClick={this.onDismiss}
+                  >
+                    Continue uploading
+                  </a>
                 </span>
               ) : (
                 <a onClick={this.onCancel}>Cancel uploading</a>
