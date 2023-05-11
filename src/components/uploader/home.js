@@ -268,7 +268,8 @@ const UploadHome = createReactClass({
   },
 
   routerWillLeave(nextLocation) {
-    return "Are you sure you want to leave this page?";
+    if (this.state.uploadActive || this.state.submitting)
+      return "Are you sure you want to leave this page?";
   },
 
   componentDidMount: function() {
