@@ -480,11 +480,6 @@ const UploadHome = createReactClass({
                 await this.submitData(data);
               })
               .catch(error => {
-                AppActions.showNotification(
-                  "alert",
-                  "Uploading failed. See the details at the uploading form messages."
-                );
-
                 console.error(error);
                 if (this.state.uploadCancelled) {
                   this.setState({
@@ -496,10 +491,15 @@ const UploadHome = createReactClass({
                     submitting: false
                   });
 
-                  AppActions.clearNotificationAfter(3000);
-
                   return;
                 }
+
+                AppActions.showNotification(
+                  "alert",
+                  "Uploading failed. See the details at the uploading form messages."
+                );
+
+                AppActions.clearNotificationAfter(3000);
 
                 this.onSubmitError();
               });
