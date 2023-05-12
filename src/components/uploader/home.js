@@ -424,10 +424,12 @@ const UploadHome = createReactClass({
             // Submit the form now
             this.submitData(data);
           } else {
+            console.log({ urls, uploads });
+
             if (urls.length !== uploads.length) {
               AppActions.showNotification(
                 "alert",
-                "Processing has already started. Please, wait for downloading of file(s) to processing server to be finished."
+                "Processing started. Please, wait for downloading of file(s) to processing server to be finished."
               );
             } else {
               AppActions.showNotification(
