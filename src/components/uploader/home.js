@@ -185,7 +185,6 @@ const UploadHome = createReactClass({
       scenes: this.getScenesDataTemplate(),
       uploadActive: false,
       uploadProgress: 0,
-      uploadError: false,
       uploadedCount: 0,
       uploadCancelled: false,
       submitting: false,
@@ -246,6 +245,10 @@ const UploadHome = createReactClass({
     this.setState({
       scenes: [getSceneDefaultState()]
     });
+  },
+
+  reset: function() {
+    this.setState(this.getInitialState());
   },
 
   onOnlineStatusChange: function() {
@@ -479,7 +482,6 @@ const UploadHome = createReactClass({
             Promise.all(uploadPromises)
               .then(async () => {
                 this.setState({
-                  uploadError: false,
                   uploadActive: false,
                   uploadedCount: 0,
                   submitting: false
@@ -493,7 +495,6 @@ const UploadHome = createReactClass({
                   this.setState({
                     uploadActive: false,
                     uploadProgress: 0,
-                    uploadError: false,
                     uploadedCount: 0,
                     uploadCancelled: false,
                     submitting: false
@@ -506,6 +507,13 @@ const UploadHome = createReactClass({
                   "alert",
                   "Uploading failed. See the details at the uploading form messages."
                 );
+
+                this.setState({
+                  uploadProgress: 0,
+                  uploadActive: false,
+                  uploadedCount: 0,
+                  submitting: false
+                });
 
                 AppActions.clearNotificationAfter(3000);
 
@@ -534,7 +542,6 @@ const UploadHome = createReactClass({
 
   onSubmitError: function() {
     this.setState({
-      uploadError: true,
       uploadActive: false,
       submitting: false
     });
@@ -546,28 +553,58 @@ const UploadHome = createReactClass({
   },
 
   submitData: async function(data) {
-    await api({
-      uri: "/uploads",
-      auth: true,
-      method: "POST",
-      body: data
-    }).then(data => {
-      var id = data.results.upload;
+    try {
+      await api({
+        uri: "/uploads",
+        auth: true,
+        method: "POST",
+        body: data
+      }).then(data => {
+        var id = data.results.upload;
 
-      // Clear form data from localStorage after successful upload
-      localStorage.removeItem(LS_SCENES_KEY);
-      this.setState(this.getInitialState());
+        // Clear form data from localStorage after successful upload
+        localStorage.removeItem(LS_SCENES_KEY);
+        this.reset();
 
-      AppActions.showNotification(
-        "success",
-        <div>
-          <div>Processing of your image(s) is in progress.</div>
+        AppActions.showNotification(
+          "success",
           <div>
-            <a href={"#/upload/status/" + id}>Check processing status →</a>
+            <div>Processing of your image(s) is in progress.</div>
+            <div>
+              <a href={"#/upload/status/" + id}>Check processing status →</a>
+            </div>
           </div>
-        </div>
-      );
-    });
+        );
+      });
+    } catch (error) {
+      if (error.response.status === 401) {
+        AppActions.showNotification(
+          "alert",
+          <div>
+            <div>The session has expired.</div>
+            <div>
+              <a
+                onClick={() => {
+                  AppActions.openModal("login");
+                }}
+              >
+                Login →
+              </a>
+            </div>
+          </div>
+        );
+
+        return;
+      }
+
+      console.error(error);
+
+      this.setState({
+        uploadActive: false,
+        submitting: false,
+        uploadProgress: 0
+      });
+    }
   },
 
   renderErrorMessage: function(message) {
