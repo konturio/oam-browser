@@ -427,19 +427,10 @@ const UploadHome = createReactClass({
             // Submit the form now
             this.submitData(data);
           } else {
-            console.log({ urls, uploads });
-
-            if (urls.length !== uploads.length) {
-              AppActions.showNotification(
-                "alert",
-                "Processing started. Please, wait for downloading of file(s) to processing server to be finished."
-              );
-            } else {
-              AppActions.showNotification(
-                "alert",
-                "Please, do not close the browser page before uploading is finished."
-              );
-            }
+            AppActions.showNotification(
+              "alert",
+              "Please, do not close the browser page before uploading is finished."
+            );
 
             AppActions.clearNotificationAfter(5000);
 
