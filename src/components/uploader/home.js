@@ -185,7 +185,6 @@ const UploadHome = createReactClass({
       scenes: this.getScenesDataTemplate(),
       uploadActive: false,
       uploadProgress: 0,
-      uploadedCount: 0,
       uploadCancelled: false,
       submitting: false,
       online: navigator.onLine
@@ -419,10 +418,6 @@ const UploadHome = createReactClass({
             delete scene.files;
           });
 
-          const urls = data.scenes.reduce((acc, scene) => {
-            return acc + scene.urls.length;
-          }, 0);
-
           if (!uploads.length) {
             // Submit the form now
             this.submitData(data);
@@ -438,7 +433,7 @@ const UploadHome = createReactClass({
             let progressStats = {};
             const uploadPromises = [];
             this.cancelPromises = [];
-            this.setState({ uploadedCount: 0, uploadActive: true });
+            this.setState({ uploadActive: true });
             uploads.forEach(file => {
               const progressTracker = createProgressTracker({
                 progressStats,
@@ -460,10 +455,6 @@ const UploadHome = createReactClass({
               const promise = uploadFile({
                 file,
                 progressTracker,
-                onUploadComplete: () =>
-                  this.setState({
-                    uploadedCount: this.state.uploadedCount + 1
-                  }),
                 setCancelCallback: cancel => this.cancelPromises.push(cancel)
               });
 
@@ -474,7 +465,6 @@ const UploadHome = createReactClass({
               .then(async () => {
                 this.setState({
                   uploadActive: false,
-                  uploadedCount: 0,
                   submitting: false
                 });
 
@@ -482,31 +472,17 @@ const UploadHome = createReactClass({
               })
               .catch(error => {
                 console.error(error);
+
                 if (this.state.uploadCancelled) {
                   this.setState({
                     uploadActive: false,
                     uploadProgress: 0,
-                    uploadedCount: 0,
                     uploadCancelled: false,
                     submitting: false
                   });
 
                   return;
                 }
-
-                AppActions.showNotification(
-                  "alert",
-                  "Uploading failed. See the details at the uploading form messages."
-                );
-
-                this.setState({
-                  uploadProgress: 0,
-                  uploadActive: false,
-                  uploadedCount: 0,
-                  submitting: false
-                });
-
-                AppActions.clearNotificationAfter(3000);
 
                 this.onSubmitError();
               });
@@ -533,14 +509,17 @@ const UploadHome = createReactClass({
 
   onSubmitError: function() {
     this.setState({
+      uploadProgress: 0,
       uploadActive: false,
       submitting: false
     });
 
     AppActions.showNotification(
       "alert",
-      <span>There was a problem uploading the files.</span>
+      "Uploading failed. See the details at the uploading form messages."
     );
+
+    AppActions.clearNotificationAfter(5000);
   },
 
   submitData: async function(data) {
@@ -595,6 +574,11 @@ const UploadHome = createReactClass({
         submitting: false,
         uploadProgress: 0
       });
+
+      AppActions.showNotification(
+        "alert",
+        "Uploading failed. See the details at the uploading form messages."
+      );
     }
   },
 
@@ -627,10 +611,8 @@ const UploadHome = createReactClass({
   },
 
   render: function() {
-    const uploadingFilesCount = this.state.scenes.reduce(
-      (acc, scene) =>
-        acc +
-        scene["img-loc"].filter(o => o.file && o.origin === "upload").length,
+    const uploadingsCount = this.state.scenes.reduce(
+      (acc, scene) => acc + scene["img-loc"].length,
       0
     );
 
@@ -642,7 +624,7 @@ const UploadHome = createReactClass({
           disabled={this.state.uploadCancelled}
           revealed={this.state.uploadActive}
           progress={this.state.uploadProgress}
-          imageCount={uploadingFilesCount}
+          imageCount={uploadingsCount}
           onCancel={this.onCancel}
           stopped={!this.state.online}
         />

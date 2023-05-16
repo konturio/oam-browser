@@ -81,6 +81,8 @@ export default createReactClass({
       return;
     }
 
+    clearTimeout(this.timer);
+
     this.timer = setTimeout(
       function() {
         this.setState({
