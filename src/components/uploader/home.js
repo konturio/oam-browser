@@ -461,6 +461,8 @@ const UploadHome = createReactClass({
               uploadPromises.push(promise);
             });
 
+            console.log(data.scenes);
+
             Promise.all(uploadPromises)
               .then(async () => {
                 this.setState({
