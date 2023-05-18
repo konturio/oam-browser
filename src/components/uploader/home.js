@@ -16,6 +16,8 @@ import { sanitizeFilenameForURL } from "utils/sanitize-filename";
 import UploadModal from "components/modals/upload_modal";
 import { withRouter } from "react-router";
 
+import { generateUniqueId } from "utils/generate-uniq-id";
+
 const LS_SCENES_KEY = "scenes-form-fields";
 
 function getSceneDefaultState() {
@@ -200,7 +202,7 @@ const UploadHome = createReactClass({
   },
 
   getSceneImgLocTemplate: function(origin) {
-    return { url: "", origin };
+    return { url: "", origin, id: generateUniqueId() };
   },
 
   addScene: function() {
@@ -225,6 +227,7 @@ const UploadHome = createReactClass({
   removeImageryLocatioFromScene: function(sceneIndex, imgLocIndex) {
     var scenes = this.state.scenes;
     scenes[sceneIndex]["img-loc"].splice(imgLocIndex, 1);
+    console.log(scenes[sceneIndex]["img-loc"]);
     this.setState({ scenes: scenes });
   },
 
