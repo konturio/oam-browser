@@ -12,7 +12,7 @@ module.exports = {
   googleDeveloperKey: "",
   googleAppId: "",
   OAMBrowserUrl: "https://map-staging.openaerialmap.org/",
-  awsKey: "AKIAZYDVV4ILMV4K5IGF",
+  awsKey: "AKIAZYDVV4ILLVLO3RFN",
   map: {
     mapbox: {
       accessToken:
@@ -24,7 +24,11 @@ module.exports = {
 
     initialView: [-18.632, 18.479],
 
-    oamMosaicLayer: null,
+    oamMosaicLayer: {
+      id: "oam-mosaic",
+      name: "OAM Mosaic",
+      url: "https://api-staging.openaerialmap.org/mosaic/{z}/{x}/{y}.png"
+    },
 
     baseLayers: [
       {
