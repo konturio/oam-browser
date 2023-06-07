@@ -27,7 +27,7 @@ module.exports = {
     oamMosaicLayer: {
       id: "oam-mosaic",
       name: "OAM Mosaic",
-      url: "https://api-staging.openaerialmap.org/mosaic/{z}/{x}/{y}.png"
+      url: "https://api-staging.openaerialmap.org/mosaic/tiles/{z}/{x}/{y}.png"
     },
 
     baseLayers: [
