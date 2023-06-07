@@ -528,6 +528,8 @@ const UploadHome = createReactClass({
   },
 
   submitData: async function(data) {
+    if (this.state.uploadCancelled) return;
+
     try {
       await api({
         uri: "/uploads",
