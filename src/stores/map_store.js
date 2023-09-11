@@ -88,6 +88,7 @@ export default Reflux.createStore({
           gsd: foot.gsd,
           tms: !!foot.properties.tms || !!foot.custom_tms,
           acquisition_end: foot.acquisition_end,
+          uploaded_at: foot.uploaded_at,
           FID: id++
         },
         geometry: foot.geojson

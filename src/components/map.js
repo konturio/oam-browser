@@ -457,7 +457,7 @@ export default createReactClass({
               d.setFullYear(d.getFullYear() - 1);
             }
 
-            if (new Date(prop.acquisition_end).getTime() < d.getTime()) {
+            if (new Date(prop.uploaded_at).getTime() < d.getTime()) {
               return false;
             }
           }
